@@ -1,9 +1,9 @@
-🛒 Order Management System (Django REST API)
+*** 🛒 Order Management System (Django REST API) ***
 
 A simple yet powerful Order Management System built using Django REST Framework (DRF).
 This project demonstrates how to manage Products, Order Items, and Orders through RESTful APIs with clean serialization, validation, and relationship handling between models.
 
-🚀 Features
+*** 🚀 Features ***
 * Product Management
     * Create, update, delete, and list products
     * Fields include: name, description, price, and stock
