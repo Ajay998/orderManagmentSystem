@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.db.models import Max
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 
@@ -24,6 +25,7 @@ class OrderList(generics.ListAPIView):
 class UserOrderListAPIView(generics.ListAPIView):
     queryset = Order.objects.prefetch_related('items__product')
     serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
     def get_queryset(self):
         user = self.request.user
         qs = super().get_queryset()
