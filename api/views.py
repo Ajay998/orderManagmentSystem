@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.db.models import Max
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
 # Create your views here.
 
@@ -31,7 +32,16 @@ class UserOrderListAPIView(generics.ListAPIView):
         qs = super().get_queryset()
         return qs.filter(user=user)
 
-
+class ProductInfoAPIView(APIView):
+    def get(self, request):
+        products = Product.objects.all()
+        count = products.count()
+        serializer = ProductInfoSerializer({
+            'product': products,
+            'count': count,
+            'max_price': products.aggregate(max_price=Max('price'))['max_price']
+        })
+        return Response(serializer.data)
 
 @api_view(['GET'])
 def products_list(request):
@@ -39,14 +49,14 @@ def products_list(request):
     serializer = ProductInfoSerializer(products, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
-def product_info(request):
-    products = Product.objects.all()
-    count = products.count()
-    serializer = ProductInfoSerializer({
-        'product': products,
-        'count': count,
-        'max_price': products.aggregate(max_price=Max('price'))['max_price']
-    })
-    return Response(serializer.data)
+# @api_view(['GET'])
+# def product_info(request):
+#     products = Product.objects.all()
+#     count = products.count()
+#     serializer = ProductInfoSerializer({
+#         'product': products,
+#         'count': count,
+#         'max_price': products.aggregate(max_price=Max('price'))['max_price']
+#     })
+#     return Response(serializer.data)
 
