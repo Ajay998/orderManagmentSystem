@@ -17,23 +17,10 @@ class ProductDetail(generics.RetrieveAPIView):
     serializer_class = ProductSerializer
     lookup_url_kwarg = 'product_id'
 
-# @api_view(['GET'])
-# def product_list(request):
-#     products = Product.objects.all()
-#     serializer = ProductSerializer(products, many=True)
-#     return Response(serializer.data)
+class OrderList(generics.ListAPIView):
+    queryset = Order.objects.prefetch_related('items__product')
+    serializer_class = OrderSerializer
 
-# @api_view(['GET'])
-# def product_detail(request, pk):
-#     product = get_object_or_404(Product, pk=pk)
-#     serializer = ProductSerializer(product)
-#     return Response(serializer.data)
-
-@api_view(['GET'])
-def order_list(request):
-    orders = Order.objects.prefetch_related('items__product')
-    serializer = OrderSerializer(orders, many=True)
-    return Response(serializer.data)
 
 @api_view(['GET'])
 def products_list(request):
